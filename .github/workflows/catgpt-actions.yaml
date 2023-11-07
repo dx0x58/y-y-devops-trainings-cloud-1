@@ -26,3 +26,9 @@ jobs:
       run: |
         docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG ./catgpt/
         docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+
+    - name: Set the new tag to prod docker-compose config
+      env:
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        sed -i "s|<IMAGE_TAG>|${IMAGE_TAG}|g" ./terraform/docker-compose.yaml
