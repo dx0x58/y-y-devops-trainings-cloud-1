@@ -34,6 +34,9 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add ./terraform/image_tag.auto.tfvars
+        git status
+        git add -f ./terraform/image_tag.auto.tfvars
+        git status
         git commit -m "Update Terraform image tag to ${IMAGE_TAG}"
         git push
+      shell: /usr/bin/bash -e {0}
