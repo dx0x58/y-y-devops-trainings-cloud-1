@@ -27,13 +27,13 @@ jobs:
         docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG ./catgpt/
         docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
-    - name: Write image tag to terraform variable file
-      run: echo "image_tag = \"${IMAGE_TAG}\"" > ./terraform/image_tag.auto.tfvars
-
     - name: Commit and push image tag file
+      env:
+        IMAGE_TAG: ${{ github.sha }}
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        echo "image_tag = \"${IMAGE_TAG}\"" > ./terraform/image_tag.auto.tfvars
         git status
         git add -f ./terraform/image_tag.auto.tfvars
         git status
