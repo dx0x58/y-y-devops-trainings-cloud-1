@@ -29,3 +29,11 @@ jobs:
 
     - name: Write image tag to terraform variable file
       run: echo "image_tag = \"${IMAGE_TAG}\"" > ./terraform/image_tag.auto.tfvars
+
+    - name: Commit and push image tag file
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add ./terraform/image_tag.auto.tfvars
+        git commit -m "Update Terraform image tag to ${IMAGE_TAG}"
+        git push
