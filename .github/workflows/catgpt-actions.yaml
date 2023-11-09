@@ -18,12 +18,6 @@ jobs:
       with:
         yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
 
-    - name: Set the new tag to prod docker-compose config
-      env:
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        sed -i "s|<IMAGE_TAG>|${IMAGE_TAG}|g" ./terraform/docker-compose.yaml
-
     - name: Build, tag, and push image to Yandex Cloud Container Registry
       env:
         CR_REGISTRY: crpugnv441j05jm89n5f
@@ -33,3 +27,5 @@ jobs:
         docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG ./catgpt/
         docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
+    - name: Write image tag to terraform variable file
+      run: echo "image_tag = \"${IMAGE_TAG}\"" > ./terraform/image_tag.auto.tfvars

@@ -19,3 +19,10 @@
 
 # Go workspace file
 go.work
+**/.terraform.lock.hcl
+**/tf_key.json
+**/key.json
+**/*.tfstate*
+**/*.terraform/
+
+**/.DS_Store
